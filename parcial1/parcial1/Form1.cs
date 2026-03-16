@@ -65,6 +65,8 @@ namespace parcial1
                 int cant = Itemas.Items.Count;
                 label1.Text = "Cantidad de Citas:  " + cant;
             }
+
+    
             reader.Close();
         }
 
@@ -118,6 +120,85 @@ namespace parcial1
         private void button2_Click(object sender, EventArgs e)
         {
             leerCitas();
+        }
+        private void leerCitasOrdenadas()
+        {
+            string nombreArchivo = @"C:\Users\diegoruiz\source\repos\parcial1\parcial1\bin\Debug\Citas.txt";
+            FileStream stream = new FileStream(nombreArchivo, FileMode.Open, FileAccess.Read);
+            StreamReader reader = new StreamReader(stream);
+            List<string> citas = new List<string>();
+
+            while (reader.Peek() > -1)
+            {
+                string linea = reader.ReadLine();
+                citas.Add(linea);
+            }
+            reader.Close();
+
+            // Ordenar las citas por fecha más reciente
+            citas = citas.OrderByDescending(cita =>
+            {
+                string[] partes = cita.Split(' ');
+                string fecha = partes[5]; // Asumiendo que la fecha está en la posición 5
+                DateTime fechaCita;
+                DateTime.TryParse(fecha, out fechaCita);
+                return fechaCita;
+            }).ToList();
+
+            mostrar.Items.Clear();
+            Itemas.Items.Clear();
+
+            foreach (string cita in citas)
+            {
+                mostrar.Items.Add(cita);
+                Itemas.Items.Add(cita);
+            }
+
+            label1.Text = "Cantidad de Citas: " + citas.Count;
+        }
+
+        private void leerCitasOrdenadasPorDoctor()
+        {
+            string nombreArchivo = @"C:\Users\diegoruiz\source\repos\parcial1\parcial1\bin\Debug\Citas.txt";
+            FileStream stream = new FileStream(nombreArchivo, FileMode.Open, FileAccess.Read);
+            StreamReader reader = new StreamReader(stream);
+            List<string> citas = new List<string>();
+
+            while (reader.Peek() > -1)
+            {
+                string linea = reader.ReadLine();
+                citas.Add(linea);
+            }
+            reader.Close();
+
+            // Ordenar las citas por el nombre del doctor  
+            citas = citas.OrderBy(cita =>
+            {
+                string[] partes = cita.Split(' ');
+                string nombreDoctor = partes[4]; // Asumiendo que el nombre del doctor está en la posición 4  
+                return nombreDoctor;
+            }).ToList();
+
+            mostrar.Items.Clear();
+            Itemas.Items.Clear();
+
+            foreach (string cita in citas)
+            {
+                mostrar.Items.Add(cita);
+                Itemas.Items.Add(cita);
+            }
+
+            label1.Text = "Cantidad de Citas: " + citas.Count;
+        }
+          
+        private void button3_Click(object sender, EventArgs e)
+        {
+            leerCitasOrdenadas();
+        }
+
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+  leerCitasOrdenadasPorDoctor();
         }
     }
 }
