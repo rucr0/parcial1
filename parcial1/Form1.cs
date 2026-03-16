@@ -135,11 +135,10 @@ namespace parcial1
             }
             reader.Close();
 
-            // Ordenar las citas por fecha más reciente
             citas = citas.OrderByDescending(cita =>
             {
                 string[] partes = cita.Split(' ');
-                string fecha = partes[5]; // Asumiendo que la fecha está en la posición 5
+                string fecha = partes[5];
                 DateTime fechaCita;
                 DateTime.TryParse(fecha, out fechaCita);
                 return fechaCita;
@@ -171,11 +170,11 @@ namespace parcial1
             }
             reader.Close();
 
-            // Ordenar las citas por el nombre del doctor  
+            
             citas = citas.OrderBy(cita =>
             {
                 string[] partes = cita.Split(' ');
-                string nombreDoctor = partes[4]; // Asumiendo que el nombre del doctor está en la posición 4  
+                string nombreDoctor = partes[4]; 
                 return nombreDoctor;
             }).ToList();
 
